@@ -12,6 +12,18 @@ wn.setup(width=800,height=600)
 
 wn.tracer(0)
 
+score_a = 0
+score_b = 0
+
+#pen
+pen=turtle.Turtle()
+pen.speed(0) # animation speed
+pen.color("white")
+pen.penup() # dont wanna see the line between the points
+pen.hideturtle()
+pen.goto(0,270)
+pen.write("Player A :0 Player B :0",align="center",font=("courier",24,"normal"))
+
 
 #Paddle A
 paddle_a = turtle.Turtle() # Capital "T" cause its the class name
@@ -47,23 +59,35 @@ ball.dy=3
 #Functions
 def paddle_a_up():
     y=paddle_a.ycor()
-    y+=20
-    paddle_a.sety(y)
+    if paddle_a.ycor() <250:
+        y+=20
+        paddle_a.sety(y)
+    else:
+        paddle_a.sety(250)
 
 def paddle_a_down():
     y=paddle_a.ycor()
-    y-=20
-    paddle_a.sety(y)
+    if paddle_a.ycor() >-250:
+        y-=20
+        paddle_a.sety(y)
+    else:
+        paddle_a.sety(-250)
 
 def paddle_b_up():
     y=paddle_b.ycor()
-    y+=20
-    paddle_b.sety(y)
+    if paddle_b.ycor() <250:
+        y+=20
+        paddle_b.sety(y)
+    else:
+        paddle_b.sety(250)
 
 def paddle_b_down():
     y=paddle_b.ycor()
-    y-=20
-    paddle_b.sety(y)
+    if paddle_b.ycor() >-250:
+        y-=20
+        paddle_b.sety(y)
+    else:
+        paddle_b.sety(-250)
 
 # Keyboard binding
 wn.listen()
@@ -96,12 +120,26 @@ while True:
     if ball.xcor() > 390:
         ball.setx(0)
         ball.dx *=-1
+        score_a +=1
+        pen.clear()
+        pen.write("Player A :{} Player B :{}".format(score_a,score_b),align="center",font=("courier",24,"normal"))
+
 
     if ball.xcor() < -390:
         ball.setx(0)
         ball.dx *=-1
+        score_b +=1
+        pen.clear()
+        pen.write("Player A :{} Player B :{}".format(score_a,score_b),align="center",font=("courier",24,"normal"))
 
-    
+    #Paddle and ball collision
+    if ball.xcor()>340 and (ball.ycor() < (paddle_b.ycor()+ 50) and ball.ycor() > (paddle_b.ycor() -50)):
+        ball.setx(340)
+        ball.dx *= -1
+
+    if ball.xcor()<-340 and (ball.ycor() < (paddle_a.ycor()+ 50) and ball.ycor() > (paddle_a.ycor() -50)):
+        ball.setx(-340)
+        ball.dx *= -1
 
 
     
